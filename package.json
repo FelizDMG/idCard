@@ -9,9 +9,11 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "vite": "npm:rolldown-vite@7.1.12"
+    "vite": "^7.0.0"
   },
-  "overrides": {
-    "vite": "npm:rolldown-vite@7.1.12"
+  "dependencies": {
+    "gsap": "^3.13.0",
+    "three": "^0.177.0"
   }
 }
+

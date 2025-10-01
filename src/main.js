@@ -9,9 +9,6 @@ document.querySelector('#app').innerHTML = `
     <div style="position: relative;">
       <canvas id="scene"></canvas>
     </div>
-    <h1>Hello Byters!</h1>
-    <p class="read-the-docs">
-      Byte Studios brought to you by Ruki and Feliz
     </p>
   </div>
   
@@ -25,8 +22,8 @@ const renderer = new THREE.WebGLRenderer({
     canvas: document.querySelector('#scene'),
     antialias: true
 })
-renderer.setSize(window.innerWidth/1.3, window.innerHeight/1.3)
-renderer.setClearColor(0x545454, 1)
+renderer.setSize(window.innerWidth, window.innerHeight)
+renderer.setClearColor(0xffffff, 1)
 camera.position.set(0, 0, 30)
 
 const light = new THREE.DirectionalLight(0xffffff, 1)
