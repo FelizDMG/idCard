@@ -17,7 +17,7 @@ document.querySelector('#app').innerHTML = `
 
 
 const scene = new THREE.Scene()
-const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000)
+const camera = new THREE.PerspectiveCamera(15, window.innerWidth / window.innerHeight, 0.1, 1000)
 const renderer = new THREE.WebGLRenderer({
     canvas: document.querySelector('#scene'),
     antialias: true
@@ -42,7 +42,7 @@ controls.enablePan = true
 
 
 const modelUrls = [
-    'https://raw.githubusercontent.com/FelizDMG/ByteStudios/main/models/IDCard.glb'
+    'https://raw.githubusercontent.com/FelizDMG/idcard/main/models/IDCard.glb'
 ]
 
 let currentModelIndex = 0
@@ -89,14 +89,6 @@ function loadModel(url) {
 
 loadModel(modelUrls[currentModelIndex])
 
-document.querySelector('#next').addEventListener('click', () => {
-    currentModelIndex = (currentModelIndex + 1) % modelUrls.length
-    loadModel(modelUrls[currentModelIndex])
-})
-document.querySelector('#prev').addEventListener('click', () => {
-    currentModelIndex = (currentModelIndex - 1 + modelUrls.length) % modelUrls.length
-    loadModel(modelUrls[currentModelIndex])
-})
 
 function animate() {
     requestAnimationFrame(animate)
