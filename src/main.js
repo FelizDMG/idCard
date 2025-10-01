@@ -1,24 +1,112 @@
 import './style.css'
-import javascriptLogo from './javascript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.js'
+import * as THREE from 'three'
+import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader'
+import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls'
+import gsap from 'gsap'
 
 document.querySelector('#app').innerHTML = `
   <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-      <img src="${javascriptLogo}" class="logo vanilla" alt="JavaScript logo" />
-    </a>
-    <h1>Hello Vite!</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
+    <div style="position: relative;">
+      <canvas id="scene"></canvas>
     </div>
+    <h1>Hello Byters!</h1>
     <p class="read-the-docs">
-      Click on the Vite logo to learn more
+      Byte Studios brought to you by Ruki and Feliz
     </p>
   </div>
+  
 `
 
-setupCounter(document.querySelector('#counter'))
+
+
+const scene = new THREE.Scene()
+const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000)
+const renderer = new THREE.WebGLRenderer({
+    canvas: document.querySelector('#scene'),
+    antialias: true
+})
+renderer.setSize(window.innerWidth/1.3, window.innerHeight/1.3)
+renderer.setClearColor(0x545454, 1)
+camera.position.set(0, 0, 30)
+
+const light = new THREE.DirectionalLight(0xffffff, 1)
+const alight = new THREE.AmbientLight(0xffffff, 1)
+light.position.set(0, 1, 2)
+scene.add(light,alight)
+
+const controls = new OrbitControls(camera, renderer.domElement)
+controls.minDistance = 10 //zoom distance min
+controls.maxDistance = 30 //zoom distance max
+controls.minPolarAngle = Math.PI / 4 // 45 degrees up
+controls.maxPolarAngle = Math.PI * 3 / 4 // 45 degrees down
+controls.maxTargetRadius = 10
+controls.screenSpacePanning = true
+controls.enablePan = true
+
+
+const modelUrls = [
+    'https://raw.githubusercontent.com/FelizDMG/ByteStudios/main/models/IDCard.glb'
+]
+
+let currentModelIndex = 0
+let currentModel = null
+const loader = new GLTFLoader()
+
+function resetCamera() {
+    gsap.to(camera.position, {
+        duration: .5,
+        x: 0,
+        y: 0,
+        z: 30,
+        ease: "power1.inOut"
+    });
+    gsap.to(controls.target, {
+        duration: .5,
+        x: 0,
+        y: 0,
+        z: 0,
+        ease: "power1.inOut",
+        onUpdate: () => camera.lookAt(controls.target)
+    });
+}
+function loadModel(url) {
+    loader.load(
+        url,
+        (gltf) => {
+            if (currentModel) {
+                scene.remove(currentModel)
+            }
+            const boundingBox = new THREE.Box3().setFromObject(gltf.scene)
+            const height = boundingBox.max.y - boundingBox.min.y
+            gltf.scene.position.y = -height / 4
+            currentModel = gltf.scene
+            scene.add(currentModel)
+            resetCamera()
+        },
+        undefined,
+        (error) => {
+            console.error('Error loading model:', error)
+        }
+    )
+}
+
+loadModel(modelUrls[currentModelIndex])
+
+document.querySelector('#next').addEventListener('click', () => {
+    currentModelIndex = (currentModelIndex + 1) % modelUrls.length
+    loadModel(modelUrls[currentModelIndex])
+})
+document.querySelector('#prev').addEventListener('click', () => {
+    currentModelIndex = (currentModelIndex - 1 + modelUrls.length) % modelUrls.length
+    loadModel(modelUrls[currentModelIndex])
+})
+
+function animate() {
+    requestAnimationFrame(animate)
+    controls.update()
+    renderer.render(scene, camera)
+}
+
+animate()
+
+
