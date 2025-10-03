@@ -94,6 +94,8 @@ function loadModel(url) {
             if (gltf.animations.length > 0) {
                 mixer = new THREE.AnimationMixer(currentModel)
                 const action = mixer.clipAction(gltf.animations[0])
+                action.setLoop(THREE.LoopOnce)
+                action.clampWhenFinished = true
                 action.play()
             }
 
