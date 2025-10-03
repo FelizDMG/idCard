@@ -18,7 +18,7 @@ document.querySelector('#app').innerHTML = `
 
 const scene = new THREE.Scene()
 const clock = new THREE.Clock()
-const camera = new THREE.PerspectiveCamera(15, window.innerWidth / window.innerHeight, 0.1, 1000)
+const camera = new THREE.PerspectiveCamera(3, window.innerWidth / window.innerHeight, 0.1, 1000,)
 const renderer = new THREE.WebGLRenderer({
     canvas: document.querySelector('#scene'),
     antialias: true
@@ -33,13 +33,12 @@ light.position.set(0, 5, 10)
 scene.add(light,alight)
 
 const controls = new OrbitControls(camera, renderer.domElement)
-controls.minDistance = 7 //zoom distance min
-controls.maxDistance = 7 //zoom distance max
+controls.enableZoom = false
 controls.minPolarAngle = Math.PI / 4 // 45 degrees up
 controls.maxPolarAngle = Math.PI * 3 / 4 // 45 degrees down
+controls.minAzimuthAngle = - Math.PI / 4
+controls.maxAzimuthAngle = Math.PI / 4
 controls.maxTargetRadius = 10
-controls.screenSpacePanning = true
-controls.enablePan = true
 
 let controlsTimeout
 controls.addEventListener('start', () => {
