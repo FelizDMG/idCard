@@ -18,7 +18,7 @@ document.querySelector('#app').innerHTML = `
 
 const scene = new THREE.Scene()
 const clock = new THREE.Clock()
-const camera = new THREE.PerspectiveCamera(3, window.innerWidth / window.innerHeight, 0.1, 1000,)
+const camera = new THREE.PerspectiveCamera(6, window.innerWidth / window.innerHeight, 0.1, 1000,)
 const renderer = new THREE.WebGLRenderer({
     canvas: document.querySelector('#scene'),
     antialias: true
