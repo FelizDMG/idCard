@@ -32,8 +32,8 @@ light.position.set(0, 1, 2)
 scene.add(light,alight)
 
 const controls = new OrbitControls(camera, renderer.domElement)
-controls.minDistance = 10 //zoom distance min
-controls.maxDistance = 10 //zoom distance max
+controls.minDistance = 5 //zoom distance min
+controls.maxDistance = 5 //zoom distance max
 controls.minPolarAngle = Math.PI / 4 // 45 degrees up
 controls.maxPolarAngle = Math.PI * 3 / 4 // 45 degrees down
 controls.maxTargetRadius = 10
