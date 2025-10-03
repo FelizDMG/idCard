@@ -26,7 +26,7 @@ renderer.setSize(window.innerWidth, window.innerHeight)
 renderer.setClearColor(0xffffff, 1)
 camera.position.set(0, 0, 30)
 
-const light = new THREE.DirectionalLight(0xffffff, 1)
+const light = new THREE.DirectionalLight(0xffffff, 2)
 const alight = new THREE.AmbientLight(0xffffff, 1)
 light.position.set(0, 1, 2)
 scene.add(light,alight)
@@ -39,6 +39,16 @@ controls.maxPolarAngle = Math.PI * 3 / 4 // 45 degrees down
 controls.maxTargetRadius = 10
 controls.screenSpacePanning = true
 controls.enablePan = true
+
+let controlsTimeout
+controls.addEventListener('start', () => {
+    clearTimeout(controlsTimeout)
+})
+controls.addEventListener('end', () => {
+    controlsTimeout = setTimeout(() => {
+        resetCamera()
+    }, 500)
+})
 
 
 const modelUrls = [
