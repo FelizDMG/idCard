@@ -17,6 +17,7 @@ document.querySelector('#app').innerHTML = `
 
 
 const scene = new THREE.Scene()
+const clock = new THREE.Clock()
 const camera = new THREE.PerspectiveCamera(15, window.innerWidth / window.innerHeight, 0.1, 1000)
 const renderer = new THREE.WebGLRenderer({
     canvas: document.querySelector('#scene'),
@@ -27,13 +28,13 @@ renderer.setClearColor(0xffffff, 1)
 camera.position.set(0, 0, 30)
 
 const light = new THREE.DirectionalLight(0xffffff, 2)
-const alight = new THREE.AmbientLight(0xffffff, 1)
-light.position.set(0, 1, 2)
+const alight = new THREE.AmbientLight(0xffffff, 2)
+light.position.set(0, 5, 10)
 scene.add(light,alight)
 
 const controls = new OrbitControls(camera, renderer.domElement)
-controls.minDistance = 5 //zoom distance min
-controls.maxDistance = 5 //zoom distance max
+controls.minDistance = 7 //zoom distance min
+controls.maxDistance = 7 //zoom distance max
 controls.minPolarAngle = Math.PI / 4 // 45 degrees up
 controls.maxPolarAngle = Math.PI * 3 / 4 // 45 degrees down
 controls.maxTargetRadius = 10
@@ -57,6 +58,7 @@ const modelUrls = [
 
 let currentModelIndex = 0
 let currentModel = null
+let mixer = null
 const loader = new GLTFLoader()
 
 function resetCamera() {
@@ -70,7 +72,7 @@ function resetCamera() {
     gsap.to(controls.target, {
         duration: .5,
         x: 0,
-        y: 0,
+        y: -0.2,
         z: 0,
         ease: "power1.inOut",
         onUpdate: () => camera.lookAt(controls.target)
@@ -88,6 +90,13 @@ function loadModel(url) {
             gltf.scene.position.y = -height / 4
             currentModel = gltf.scene
             scene.add(currentModel)
+
+            if (gltf.animations.length > 0) {
+                mixer = new THREE.AnimationMixer(currentModel)
+                const action = mixer.clipAction(gltf.animations[0])
+                action.play()
+            }
+
             resetCamera()
         },
         undefined,
@@ -102,6 +111,8 @@ loadModel(modelUrls[currentModelIndex])
 
 function animate() {
     requestAnimationFrame(animate)
+    const delta = clock.getDelta()
+    if (mixer) mixer.update(delta)
     controls.update()
     renderer.render(scene, camera)
 }
