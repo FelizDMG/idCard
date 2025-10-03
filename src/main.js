@@ -23,7 +23,7 @@ const renderer = new THREE.WebGLRenderer({
     antialias: true
 })
 renderer.setSize(window.innerWidth, window.innerHeight)
-renderer.setClearColor(0x242424, 1)
+renderer.setClearColor(0xffffff, 1)
 camera.position.set(0, 0, 30)
 
 const light = new THREE.DirectionalLight(0xffffff, 1)
