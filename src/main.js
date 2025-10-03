@@ -23,7 +23,7 @@ const renderer = new THREE.WebGLRenderer({
     antialias: true
 })
 renderer.setSize(window.innerWidth, window.innerHeight)
-renderer.setClearColor(0xffffff, 1)
+renderer.setClearColor(0x242424, 1)
 camera.position.set(0, 0, 30)
 
 const light = new THREE.DirectionalLight(0xffffff, 1)
@@ -33,7 +33,7 @@ scene.add(light,alight)
 
 const controls = new OrbitControls(camera, renderer.domElement)
 controls.minDistance = 10 //zoom distance min
-controls.maxDistance = 30 //zoom distance max
+controls.maxDistance = 10 //zoom distance max
 controls.minPolarAngle = Math.PI / 4 // 45 degrees up
 controls.maxPolarAngle = Math.PI * 3 / 4 // 45 degrees down
 controls.maxTargetRadius = 10
